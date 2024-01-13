@@ -19,7 +19,7 @@ users = [
 
 @app.get('/')
 def message():
-    return 'Hello world'
+    return 'Hello worlds'
     
 @app.get('/users')
 def get_users():
