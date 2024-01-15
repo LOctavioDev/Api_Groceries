@@ -8,10 +8,12 @@ from starlette.status import HTTP_204_NO_CONTENT
 
 user = APIRouter()
 
-@user.get("/users")
+#GET ALL USERS 
+@user.get("/users", response_model=list[User])
 def find_all_users():
     return usersEntity(conn.groceriesdb.user.find()) 
- 
+
+#ADD A USER WITH ENCRIPTATION
 @user.post("/users")
 def create_user(user: User):
     new_user = dict(user)
@@ -23,10 +25,12 @@ def create_user(user: User):
 
     return userEntity(user)
 
+#GER USER BY ID
 @user.get("/user/{id}")
 def find_user(id: str):
     return userEntity(conn.groceriesdb.user.find_one({"_id": ObjectId(id)}))
 
+#UOPDATE A USER 
 @user.put('/user/{id}')
 def update_user(id: str, user: User):
     conn.groceriesdb.user.find_one_and_update(
@@ -39,6 +43,8 @@ def update_user(id: str, user: User):
             )
     return userEntity(conn.groceriesdb.user.find_one({"_id": ObjectId(id)} ))
 
+
+#DELETE A USER BY ID
 @user.delete('/user/{id}')
 def delete_user(id: str):
     userEntity(conn.groceriesdb.user.find_one_and_delete({"_id": ObjectId(id)}))   
